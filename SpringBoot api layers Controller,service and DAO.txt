@@ -1,0 +1,73 @@
+SpringBoot api layers Controller,service and DAO
+
+In a Spring Boot application, it's common to organize your code into different layers to achieve separation of concerns and maintain a clean and modular architecture. The three main layers you mentioned are:
+
+Controller Layer:
+
+This layer is responsible for handling incoming HTTP requests and returning appropriate responses.
+Controllers receive input from the client, process it (usually by invoking service methods), and return the result.
+Annotate your controller classes or methods with @RestController or @Controller to indicate that they handle HTTP requests.
+Example Controller:
+
+@RestController
+public class MyController {
+
+    @Autowired
+    private MyService myService;
+
+    @GetMapping("api/{id}")
+    public ResponseEntity<String> showSingleStudentRecord(@PathVariable int id) {
+        String result = myService.showSingleStudentRecord(id);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+}
+
+Service Layer:
+
+This layer contains the business logic of your application. It is responsible for processing data, applying business rules, and interacting with the data access layer (DAO) to perform CRUD operations.
+Annotate your service classes with @Service to indicate that they hold the business logic.
+Example Service:
+
+@Service
+public class MyService {
+
+	@Autowired
+	private MyDAO myDAO;
+
+	public String showSingleStudentRecord(int id) {
+		return myDAO.showSingleStudentRecord(id);
+	}
+}
+
+
+
+
+DAO (Data Access Object) Layer:
+
+This layer is responsible for interacting with the database or any other data storage. It abstracts the data access and provides a clean interface for the service layer to interact with the data.
+Annotate your DAO classes with @Repository.
+Example DAO:
+
+
+@Repository
+public class MyDAO {
+
+	@Autowired
+	SessionFactory sf;
+	
+	public String showSingleStudentRecord(int id) {
+		// Database interaction code
+		Session s=sf.openSession();
+		Student ss=s.get(Student.class, id);
+		return "Show Single Student Record \n"+ss;
+	}
+}
+
+
+
+Remember to configure your Spring Boot application properly with annotations like @SpringBootApplication on your main class or with XML configuration, depending on your preference. Additionally, make sure to use @Autowired or constructor injection to inject dependencies between these layers. This way, each layer is loosely coupled and can be tested independently.
+
+
+
+
+

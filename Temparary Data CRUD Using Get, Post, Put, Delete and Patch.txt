@@ -1,0 +1,104 @@
+Temparary Data CRUD Using Get, Post, Put, Delete and Patch
+
+package com.JIO.Z.Jio.Jio;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class StudentController {
+
+	@RequestMapping("A")
+	public String myName() {
+		return "Gopal";
+	}
+
+	ArrayList<Student> a = new ArrayList<Student>();
+
+	public StudentController() {
+		a.add(new Student(101, "Gopal"));
+		a.add(new Student(102, "Sopan"));
+	}
+
+	@GetMapping("All")
+	public ArrayList<Student> all() {
+		return a;
+	}
+
+	@GetMapping("one/{id}")
+	public Student one(@PathVariable int id) {
+		Student ss = new Student();
+		for (Student student : a) {
+			if (student.id == id) {
+				ss = student;
+			}
+		}
+		return ss;
+	}
+
+	@PostMapping("insert")
+	public ArrayList<Student> insert(@RequestBody Student student) {
+		a.add(student);
+		return a;
+	}
+
+	@PostMapping("b/{id}/{name}")
+	public ArrayList<Student> insertAPI(@PathVariable int id, @PathVariable String name) {
+		a.add(new Student(id, name));
+		return a;
+	}
+
+	@PostMapping("insertall")
+	public ArrayList<Student> insertall(@RequestBody List<Student> student) {
+		a.addAll(student);
+		return a;
+	}
+
+	@PutMapping("update")
+	public ArrayList<Student> update(@RequestBody Student student) {
+		Student ss = new Student();
+		for (Student stud : a) {
+			if (stud.id == student.id) {
+				ss = stud;
+			}
+		}
+		ss.setId(student.id);
+		ss.setName(student.name);
+		return a;
+	}
+
+	@PatchMapping("partialUpdate/{id}/{name}")
+	public ArrayList<Student> partialUpdate(@PathVariable int id, @PathVariable String name) {
+		Student ss = new Student();
+		for (Student stud : a) {
+			if (stud.id == id) {
+				ss = stud;
+			}
+		}
+		ss.setId(id);
+		ss.setName(name);
+		return a;
+	}
+
+	@DeleteMapping("delete/{id}")
+	public ArrayList<Student> delete(@PathVariable int id) {
+		Student ss = new Student();
+		for (Student student : a) {
+			if (student.id == id) {
+				ss = student;
+			}
+		}
+		a.remove(ss);
+		return a;
+	}
+}

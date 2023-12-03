@@ -1,0 +1,58 @@
+SpringBoot api layers Controller,service and DAO
+
+Controller Layer:
+Example Controller:
+
+@RestController
+public class MyController {
+
+    @Autowired
+    private MyService myService;
+
+    @GetMapping("api/{id}")
+    public ResponseEntity<String> showSingleStudentRecord(@PathVariable int id) {
+        String result = myService.showSingleStudentRecord(id);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+}
+
+Service Layer:
+Example Service:
+
+@Service
+public class MyService {
+
+	@Autowired
+	private MyDAO myDAO;
+
+	public String showSingleStudentRecord(int id) {
+		return myDAO.showSingleStudentRecord(id);
+	}
+}
+
+
+
+
+DAO (Data Access Object) Layer:
+Example DAO:
+
+
+@Repository
+public class MyDAO {
+
+	@Autowired
+	SessionFactory sf;
+	
+	public String showSingleStudentRecord(int id) {
+		// Database interaction code
+		Session s=sf.openSession();
+		Student ss=s.get(Student.class, id);
+		return "Show Single Student Record \n"+ss;
+	}
+}
+
+
+
+
+
+
